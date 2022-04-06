@@ -1,13 +1,7 @@
 import React from 'react'
 import {FaEdit, FaTrash} from 'react-icons/fa'
 
-const List = ({items, setItems, setMessage, setWarning, enterEditMode}) => {
-
-    function deleteItem(index) {
-        setItems(prevItems => prevItems.filter((prevItem, prevIndex) => prevIndex !== index))
-        setWarning(false)
-        setMessage("Item deleted!")
-    }
+const List = ({items, deleteItem, enterEditMode}) => {
 
     const list = items.map((item, index) => {
         return <article className="grocery-item" key={index}>

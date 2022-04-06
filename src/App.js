@@ -22,6 +22,19 @@ function App() {
         }
     }
 
+    function updateItem() {
+        setItems(prevItems => prevItems.map((prevItem, prevIndex) => {
+            return prevIndex === currentIndex ? text : prevItem
+        }))
+        resetForm("Item updated!")
+    }
+
+    function deleteItem(index) {
+        setItems(prevItems => prevItems.filter((prevItem, prevIndex) => prevIndex !== index))
+        setWarning(false)
+        setMessage("Item deleted!")
+    }
+
     function clearItems() {
         if (items.length > 0) {
             setItems([])
@@ -35,13 +48,6 @@ function App() {
         setEditMode(true)
     }
 
-    function updateItem() {
-        setItems(prevItems => prevItems.map((prevItem, prevIndex) => {
-            return prevIndex === currentIndex ? text : prevItem
-        }))
-        resetForm("Item updated!")
-    }
-
     function resetForm(message) {
         setWarning(false)
         setMessage(message)
@@ -50,16 +56,11 @@ function App() {
     }
 
     useEffect(() => {
-        const timeout = setTimeout(() => setMessage(""), 2000)
-        return () => clearTimeout(timeout)
-    }, [message])
-
-    useEffect(() => {
         localStorage.setItem("items", JSON.stringify(items))
     }, [items])
 
     return <section className="section-center">
-        {message && <Alert message={message} warning={warning}/>}
+        {message && <Alert setMessage={setMessage} message={message} warning={warning} items={items} />}
         <form className="grocery-form" onSubmit={event => event.preventDefault()}>
             <h3>Shopping list</h3>
             <div className="form-control">
@@ -74,9 +75,7 @@ function App() {
         </form>
         <div className="grocery-container">
             <List items={items}
-                  setItems={setItems}
-                  setMessage={setMessage}
-                  setWarning={setWarning}
+                  deleteItem={deleteItem}
                   enterEditMode={enterEditMode}/>
             <button className="clear-btn" onClick={clearItems}>clear items</button>
         </div>
