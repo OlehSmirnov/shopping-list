@@ -4,7 +4,7 @@ import Alert from './Alert'
 
 function App() {
     const [text, setText] = useState("")
-    const [items, setItems] = useState(JSON.parse(localStorage.getItem("items")) || [])
+    const [items, setItems] = useState(() => (JSON.parse(localStorage.getItem("items")) || []))
     const [message, setMessage] = useState("")
     const [warning, setWarning] = useState(false)
     const [editMode, setEditMode] = useState(false)
@@ -21,6 +21,8 @@ function App() {
             setMessage("Enter some item!")
         }
     }
+
+
 
     function updateItem() {
         setItems(prevItems => prevItems.map((prevItem, prevIndex) => {
